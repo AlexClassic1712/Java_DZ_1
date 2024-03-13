@@ -1,23 +1,56 @@
-import javax.xml.crypto.dsig.keyinfo.KeyValue;
+import com.sun.jdi.PrimitiveValue;
+
+import java.awt.image.AreaAveragingScaleFilter;
 import java.security.KeyStore;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.ToIntFunction;
 
 
-public class PhoneBook implements Comparable<PhoneBook> {
+public class PhoneBook {
 
 
     private static HashMap<String, ArrayList<Integer>> phoneBook = new HashMap<>();
 
-   private ArrayList<Integer> phoneNum = new ArrayList<>();
+    public List<ArrayList<Integer>> phoneNum = new ArrayList<>(phoneBook.values());
 
-    public void PhoneBook( String name,int phoneNum) {
-            phoneBook.put(name, new ArrayList<>(Arrays.asList(phoneNum)));
-             this.phoneNum.add(phoneBook.get(name).size());
+
+
+    public void phoneBookList() {
+
+
+        List<Map.Entry<String, ArrayList<Integer>>> entries = new ArrayList<>();
+
+
+        for (var entry : phoneBook.entrySet()) {
+
+            entries.add(entry);
+
+        }
+
+
+        Collections.sort(entries, new Comparator<Map.Entry<String, ArrayList<Integer>>>() {
+
+            public int compare(Map.Entry<String, ArrayList<Integer>> a,
+                               Map.Entry<String, ArrayList<Integer>> b) {
+                if (a.getValue().size() - b.getValue().size() > 0)
+                    return 1;
+                if (a.getValue().size() - b.getValue().size() < 0)
+                    return -1;
+                return 0;
+            }
+        });
+        System.out.println(entries);
+//
+//            phoneNum.entrySet()
+//                    .stream()
+//                    .sorted(Map.Entry.comparingByValue())
+//                    .forEach(System.out::println);
+//        for (var entry : phoneNum.entrySet()) {
+//            String key = entry.getKey();
+//            var value = entry.getValue();
+//            System.out.println(key + ": "+ phoneNum.get(key));
+
+
     }
-
-
 
     static void add(String name, int phoneNum) {
 
@@ -29,49 +62,7 @@ public class PhoneBook implements Comparable<PhoneBook> {
         } else
             phoneBook.get(name).add(phoneNum);
     }
-//    public static HashMap<String, ArrayList<Integer>> sortByValue(HashMap<String, ArrayList<Integer>> hm)
-//    {
-//        // Create a list from elements of HashMap
-//        Set<Map.Entry<String, ArrayList<Integer>>> list = phoneBook.entrySet();
-//
-//        // Sort the list
-//        Collections.sort(list, new Comparator<Map.Entry<String, ArrayList<Integer>> >() {
-//
 
-
-//            public int compare(Map.Entry<String, ArrayList<Integer>> o1,
-//                               Map.Entry<String, ArrayList<Integer>> o2)
-//            {
-//                return (o1.getValue()).compareTo(o2.getValue());
-//            }
-//        });
-//
-//        // put data from sorted list to hashmap
-//        HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
-//        for (Map.Entry<String, Integer> aa : list) {
-//            temp.put(aa.getKey(), aa.getValue());
-//        }
-//        return temp;
-//    }
-
-
-    public static void PhoneBook1() {
-
-
-        Collection.sort(phoneBook, new Comparator<Map.Entry<String, ArrayList<Integer>>(){
-            @Override
-            public int compare(KeyStore.Entry<String, List<Integer>> o1, KeyStore.Entry<String, List<Integer>> o2){
-
-            }
-        });
-
-
-    }
-
-
-  /*  public static HashMap<String, ArrayList<Integer>> getByPassNum() {
-        return phoneBook;
-    }*/
 
     public static ArrayList<Integer> find(String name) {
         ArrayList<Integer> arFind = new ArrayList<>();
@@ -79,13 +70,6 @@ public class PhoneBook implements Comparable<PhoneBook> {
             return arFind = phoneBook.get(name);
         else
             return arFind;
-    }
-
-    @Override
-    public int compareTo(PhoneBook o) {
-
-
-        return this.getPhoneBook()-o.getPhoneBook() ;
     }
 }
 
